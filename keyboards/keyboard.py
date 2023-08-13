@@ -10,6 +10,9 @@ kb5 = KeyboardButton('/psychotype')
 
 kb_main.add(kb2, kb3).add(kb4, kb5)
 
+kb_main_state = ReplyKeyboardMarkup(resize_keyboard=True)
+kb_main_state.add(kb2).add(kb3, kb4)
+
 kb_answer = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_two1 = KeyboardButton('A')
 kb_two2 = KeyboardButton('B')

@@ -7,8 +7,11 @@ from callbacks import callback
 
 async def on_startup(_):
     print('Бот запущен')
-    await base_questions.db_start()
-    await base_user.db_start()
+    # await base_questions.db_start()
+    # await base_user.db_start()
+    await base_questions.async_db_start()
+    await base_user.async_db_start()
+
 
 handler.register_handlers_client(dp)
 callback.register_callback_client(dp)

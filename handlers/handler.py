@@ -52,14 +52,14 @@ async def start_command(message: types.Message, state: FSMContext):
     await state.finish()
     await bot.send_message(chat_id=message.from_user.id,
                            text=START,
-                           reply_markup=keyboard.kb_main, parse_mode='html')
+                           reply_markup=keyboard.kb_main_state, parse_mode='html')
 
 
 async def info_command(message: types.Message, state: FSMContext):
     await state.finish()
     await bot.send_message(chat_id=message.from_user.id,
                            text=INFO,
-                           reply_markup=keyboard.kb_main, parse_mode='html')
+                           reply_markup=keyboard.kb_main_state, parse_mode='html')
     photo_url = "https://i.ibb.co/3CscczV/image.png"
     await bot.send_photo(chat_id=message.from_user.id, photo=photo_url)
 
@@ -73,15 +73,24 @@ async def begin_test_command(message: types.Message, state: FSMContext):
 
     question = await base_questions.get_question(0)  # получаем вопрос
     answer = await base_questions.get_answer(0)  # получаем ответы
+    print('handler ', answer)
+#     TEXT = f"""
+# 🚩<b>Тест начался</b>
 
+# Вопрос {1}
+
+# <b>{question}</b>
+# A) {answer[0][0]}
+# B) {answer[1][0]}
+#     """
     TEXT = f"""
 🚩<b>Тест начался</b>
         
 Вопрос {1}
 
 <b>{question}</b>
-A) {answer[0][0]}
-B) {answer[1][0]}
+A) {answer[0]}
+B) {answer[1]}
     """
 
     await bot.send_message(text=TEXT, reply_markup=keyboard.kb_answer, chat_id=message.from_user.id, parse_mode='html')
@@ -97,13 +106,20 @@ async def last_command(message: types.Message):
         NUM = 0
     question = await base_questions.get_question(NUM)
     answer = await base_questions.get_answer(NUM)
+    print('handler2 ', answer)
+#     TEXT = f"""
+# Вопрос {NUM + 1}
 
+# <b>{question}</b>
+# A) {answer[0][0]}
+# B) {answer[1][0]}
+#         """
     TEXT = f""" 
 Вопрос {NUM + 1}
 
 <b>{question}</b>
-A) {answer[0][0]}
-B) {answer[1][0]}
+A) {answer[0]}
+B) {answer[1]}
         """
     await bot.send_message(text='✅Вы вернулись к предыдущему вопросу', chat_id=message.from_user.id)
     await bot.send_message(text=TEXT, reply_markup=keyboard.kb_answer, chat_id=message.from_user.id, parse_mode='html')
@@ -129,12 +145,19 @@ async def state_answer_1(message: types.Message, state: FSMContext):
     question = await base_questions.get_question(NUM)
     answer = await base_questions.get_answer(NUM)
 
+#     TEXT = f"""
+# Вопрос {NUM + 1}
+
+# <b>{question}</b>
+# A) {answer[0][0]}
+# B) {answer[1][0]}
+#     """
     TEXT = f""" 
 Вопрос {NUM + 1}
 
 <b>{question}</b>
-A) {answer[0][0]}
-B) {answer[1][0]}
+A) {answer[0]}
+B) {answer[1]}
     """
 
     await bot.send_message(text=TEXT, reply_markup=keyboard.kb_answer, chat_id=message.from_user.id, parse_mode='html')
@@ -163,12 +186,19 @@ async def state_answer_2(message: types.Message, state: FSMContext):
     question = await base_questions.get_question(NUM)
     answer = await base_questions.get_answer(NUM)
 
+#     TEXT = f"""
+# Вопрос {NUM + 1}
+
+# <b>{question}</b>
+# A) {answer[0][0]}
+# B) {answer[1][0]}
+#     """
     TEXT = f""" 
 Вопрос {NUM + 1}
 
 <b>{question}</b>
-A) {answer[0][0]}
-B) {answer[1][0]}
+A) {answer[0]}
+B) {answer[1]}
     """
 
     await bot.send_message(text=TEXT, reply_markup=keyboard.kb_answer, chat_id=message.from_user.id, parse_mode='html')
@@ -183,7 +213,7 @@ async def safe_command(message: types.Message, state: FSMContext):
     DICT_ANSWER['num'] = NUM
     NUM = 0
     await base_user.insert(DICT_ANSWER)
-    await bot.send_message(text='✅Ваши ответы сохранены', reply_markup=keyboard.kb_main, chat_id=message.from_user.id)
+    await bot.send_message(text='✅Ваши ответы сохранены', reply_markup=keyboard.kb_main_state, chat_id=message.from_user.id)
     await bot.send_message(text=START, chat_id=message.from_user.id)
     await state.finish()
 
@@ -206,20 +236,29 @@ async def load_command(message: types.Message):
 
         question = await base_questions.get_question(NUM)  # получаепм вопрос
         answer = await base_questions.get_answer(NUM)  # получаем ответы
+#         TEXT = f"""
+# ✅<b>Вы загрузили последние ответы</b>
+
+# Вопрос {NUM+1}
+
+# <b>{question}</b>
+# A) {answer[0][0]}
+# B) {answer[1][0]}
+#     """
         TEXT = f"""
 ✅<b>Вы загрузили последние ответы</b>
     
 Вопрос {NUM+1}
 
 <b>{question}</b>
-A) {answer[0][0]}
-B) {answer[1][0]}
+A) {answer[0]}
+B) {answer[1]}
     """
 
         await bot.send_message(text=TEXT, reply_markup=keyboard.kb_answer, chat_id=message.from_user.id, parse_mode='html')
         await StateAnswer.ANS_1.set()
     except:
-        await bot.send_message(text='⛔Нет сохраненных данных', reply_markup=keyboard.kb_main, chat_id=message.from_user.id)
+        await bot.send_message(text='⛔Нет сохраненных данных', reply_markup=keyboard.kb_main_state, chat_id=message.from_user.id)
 
 
 def register_handlers_client(dp: Dispatcher):
