@@ -218,7 +218,7 @@ async def safe_command(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-async def safe_psychotype_command(message: types.Message):
+async def load_command(message: types.Message):
     global NUM, DICT_ANSWER
     DICT_ANSWER = {}
     try:
