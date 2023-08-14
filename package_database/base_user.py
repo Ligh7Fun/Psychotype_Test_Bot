@@ -156,7 +156,7 @@ async def insert(dict_base):
                 SELECT * FROM User_Answer
                 WHERE user_id = $1
                 ''',
-                user_id
+                str(user_id)
             )
 
             if record_user_values is None:  # нет человека в БД
@@ -181,10 +181,11 @@ async def insert(dict_base):
                         final_answer_user.append(record_user_values[i])
                 final_answer_user = final_answer_user + new_answer_user[2:]
 
+                final_answer_user = [str(value) for value in final_answer_user]
                 keys = ', '.join(['$' + str(i+1)
                                  for i in range(len(final_answer_user))])
                 query = f"DELETE FROM User_Answer WHERE user_id = $1"
-                await connection.execute(query, final_answer_user[0])
+                await connection.execute(query, int(final_answer_user[0]))
                 query = f"INSERT INTO User_Answer VALUES ({keys})"
                 await connection.execute(query, *final_answer_user)
 
@@ -197,7 +198,7 @@ async def select_num(user):
                 SELECT num FROM User_Answer
                 WHERE user_id = $1
                 ''',
-                user
+                str(user)
             )
             return num
 
@@ -210,7 +211,7 @@ async def select_data(user):
                 SELECT * FROM User_Answer
                 WHERE user_id = $1
                 ''',
-                user
+                str(user)
             )
             return data
 
@@ -223,7 +224,7 @@ async def safe_psychotype(user, psychotype):
                 UPDATE User_Answer SET psychotype = $1 WHERE user_id = $2
                 ''',
                 psychotype,
-                user
+                str(user)
             )
 
 
@@ -234,5 +235,5 @@ async def delet(user):
                 '''
                 DELETE FROM User_Answer WHERE user_id = $1
                 ''',
-                int(user)
+                str(user)
             )

@@ -10,7 +10,7 @@ from package_database import base_questions, base_user
 START = """
 🌎Главное меню - /start
 📔Описание проекта - /info
-🚩Начать тест - /begin_test
+🚩Начать тест сначала - /begin_test
 ♻Загрузить ответы - /load
 🎯Узнать психотип - /psychotype
 """
@@ -218,7 +218,7 @@ async def safe_command(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-async def load_command(message: types.Message):
+async def safe_psychotype_command(message: types.Message):
     global NUM, DICT_ANSWER
     DICT_ANSWER = {}
     try:
